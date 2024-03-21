@@ -14,7 +14,7 @@ The GPT is equipped with the following tools:
 8. Ability to get information about the user including name, home directory, geo location, time zone, host and OS information
 9. Ability to evaluate Javascript code in node.js
 
-And, of course, since you have the source code you can add or modify the tools yourself.
+And, of course, since you have the source code you can add or modify tools yourself.
 
 **For security reasons you must run your own personal server for this GPT.**
 
@@ -38,7 +38,7 @@ You must first create a firebase project using the Google firebase console
     
 5.  **Create Project:** After configuring your project's settings, click on the “Create project” button. Firebase will take a few moments to prepare your project.
     
-6.  ** Enable the Blaze pay as you go billing plan:** In order to deploy your server to cloud run, you'll need to enable pay as you go billing. This does not mean you will actually incur any costs. You can tap on the "Spark Plan" button on the getting started page to do this. Or tap the gear button on the sidebar and select "Usage and billing", and then select the "Details and settings" tab. You can set a budget alert to ensure you do not incur charges.
+6.  **Enable the Blaze pay as you go billing plan:** In order to deploy your server to cloud run, you'll need to enable pay as you go billing. This does not mean you will actually incur any costs. You can tap on the "Spark Plan" button on the getting started page to do this. Or tap the gear button on the sidebar and select "Usage and billing", and then select the "Details and settings" tab. You can set a budget alert to ensure you do not incur charges.
 
 #### **Add Firebase Authentication to Your Project:**
 1. In the left-hand menu, click on "Authentication" to open the Authentication section.
@@ -127,3 +127,5 @@ NOTE: be sure to keep the following generated files private:
 1. `{Cloud,Build,Assistant}/apiKey.txt`
 2. `Cloud/ServiceAccount.json`
 3. `{Cloud,Assistant}/firebaseConfig.json`
+
+Once your server is deployed, you can modify the schema in your GPT and make changes to the Assistant app without redeploying the server.
