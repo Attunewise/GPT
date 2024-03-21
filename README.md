@@ -1,5 +1,5 @@
 This project enables you to experiment with an OpenAI [GPT](https://chat.openai.com/gpts) that can act as an agent on your desktop computer.
-The benefit of this approach compared to other agent frameworks, is that OpenAI pays for the tokens and you don't have to pay for the [expensive GPT-4 API](https://openai.com/pricing).
+The benefit of this approach compared to other agent frameworks is that OpenAI pays for the tokens and you don't have to pay for the [expensive GPT-4 API](https://openai.com/pricing).
 
 Using GPT-4 with tools has many pitfalls and failures, which few people are aware of due to limited access to testing it on realistic use cases. The purpose of this project is to enable such testing. All you need is a paid OpenAI account which is $20/mo.
 
@@ -38,12 +38,12 @@ You must first create a firebase project using the Google firebase console
     
 5.  **Create Project:** After configuring your project's settings, click on the “Create project” button. Firebase will take a few moments to prepare your project.
     
-6. ** Enable the Blaze pay as you go billing plan** In order to deploy your server to cloud run, you'll need to enable pay as you go billing. This does not mean you will actually incur any costs. You can click on the 'Spark Plan' button on the gettig started page to do this. Or click the gear button on the sidebar and select Usage and billing, and then select the Details and settings tab. You can set a budget alert to ensure you do not incur charges.
+6.  ** Enable the Blaze pay as you go billing plan:** In order to deploy your server to cloud run, you'll need to enable pay as you go billing. This does not mean you will actually incur any costs. You can tap on the "Spark Plan" button on the getting started page to do this. Or tap the gear button on the sidebar and select "Usage and billing", and then select the "Details and settings" tab. You can set a budget alert to ensure you do not incur charges.
 
 #### **Add Firebase Authentication to Your Project:**
 1. In the left-hand menu, click on "Authentication" to open the Authentication section.
 2. Tap the "Get Started" Button
-3. You don't have to enable any sign-in providers as the GPT client will use custom authentication.
+3. You don't have to enable any sign-in providers as the GPT client will use custom authentication with the API key.
 
 #### **Add Firestore to Your Project:**
 
@@ -80,7 +80,7 @@ Additionally, it will create the following files containing information you will
 5. `Schema-MacOS.json` - Schema for the actions provided by your GPT on a Mac.
 6. `serverURL.txt` - the url of your deployed server
 
-To build and deploy your server following these steps:
+xTo build and deploy your server follow these steps:
 1.  Open a terminal and navigate to the `Cloud` folder.
 2.  Run ```npm install -g firebase-tools``` to install the firebase cli, if you haven't already.
 2.  Run ```firebase login``` to log in to the firebase cli, if you haven't already
@@ -94,8 +94,8 @@ This command will
 1. Set up the firebase project
 2. Configure security for your firestore database
 3. Create a unique api key and associated firebase account
-4. Enable required deployment services on your project: artifact registry, cloud build, cloud run
-6. Deploy the server using google cloud run
+4. Enable required google deployment services on your project: artifact registry, cloud build, cloud run
+5. Deploy the server using google cloud run
 6. Generate the output files
 
 Next you must create your GPT using OpenAI's [GPT editor](https://chat.openai.com/gpts/editor)
@@ -121,3 +121,9 @@ npm start
 ```
 
 The first time you run it you will land on the OpenAI sign in page. Once you sign in you will redirected to your GPT.
+
+NOTE: be sure to keep the following generated files private:
+
+1. `{Cloud,Build,Assistant}/apiKey.txt`
+2. `Cloud/ServiceAccount.json`
+3. `{Cloud,Assistant}/firebaseConfig.json`

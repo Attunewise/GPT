@@ -477,6 +477,17 @@ const getSchema = (platform, serverURL) => {
                       "description": "The target file, directory, or URL to open."
                     }
                   },
+                  "window": {
+                    "type": "object",
+                    "properties": {
+                      "visible": { "type": "boolean" },
+                      "x": {"type": "number" },
+                      "y": {"type": "number" },
+                      "width": {"type": "number" },
+                      "height": {"type": "number" }
+                    },
+                    "description": "Location, size, and visibility of browser window"
+                  },
                   "required": [
                     "target"
                   ]
@@ -501,6 +512,17 @@ const getSchema = (platform, serverURL) => {
                       "type": "string",
                       "format": "uri",
                       "description": "URL of web page in which to execute the script."
+                    },
+                    "window": {
+                      "type": "object",
+                      "properties": {
+                        "visible": { "type": "boolean" },
+                        "x": {"type": "number" },
+                        "y": {"type": "number" },
+                        "width": {"type": "number" },
+                        "height": {"type": "number" }
+                      },
+                      "description": "Location, size, and visibility of browser window"
                     },
                     "script": {
                       "type": "string",
