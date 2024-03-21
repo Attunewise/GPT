@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    match /UserChannel/{uid} {
+      allow read,write: if (request.auth.uid == uid)
+    }
+    
+    match /UserChannel/{uid}/toolCalls/{id} {
+      allow read,write,delete: if (request.auth.uid == uid)
+    }
+
+    match /UserChannel/{uid}/taskNotes/{id} {
+      allow read,write,delete: if (request.auth.uid == uid)
+    }
+    
+    match /GPT/{uid} {
+     allow read,write: if (request.auth.uid == uid)
+    }
+  }
+}
+

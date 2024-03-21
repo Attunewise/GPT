@@ -1,0 +1,40 @@
+
+#__next > div.relative.z-0.flex.h-full.w-full.overflow-hidden > div > main > div.flex.h-full.flex-col > div.flex-1.overflow-hidden > div > div.flex.h-full.flex-col.items-center.justify-center.text-token-text-primary > div.relative > div > div {
+
+}
+#__next > div.relative.z-0.flex.h-full.w-full.overflow-hidden > div > main > div.flex.h-full.flex-col > div.flex-1.overflow-hidden > div > div.flex.h-full.flex-col.items-center.justify-center.text-token-text-primary > div.flex.flex-col.items-center.gap-2 > div.flex.items-center.gap-1.text-token-text-tertiary > div > div.text-sm.text-token-text-tertiary {
+  display: none !important;
+}
+
+#__next [aria-haspopup="menu"] {
+
+}
+
+#__next [aria-haspopup="dialog"] {
+    display: none !important;
+}
+
+#__next > div.relative.z-0.flex.h-full.w-full.overflow-hidden > div > div.text-token-primary.sticky.top-0.z-10.flex.min-h-\[40px\].items-center.justify-center.border-b.border-token-border-medium.bg-token-main-surface-primary.pl-1.md\:hidden > div.absolute.bottom-0.right-0.top-0.flex.items-center > button {
+    display: none !important;
+}
+
+nav[aria-label="Chat history"] > div:last-child {
+    display: none !important;
+}
+
+nav[aria-label="Chat history"] .sticky > div {
+    display: none !important;
+}
+
+.sticky + div {
+    display: none !important;
+}
+
+
+#__next > div.relative.z-0.flex.h-full.w-full.overflow-hidden > div > main > div.flex.h-full.flex-col > div.w-full.pt-2.md\:pt-0.dark\:border-white\/20.md\:border-transparent.md\:dark\:border-transparent.md\:w-\[calc\(100\%-\.5rem\)\] > div > span {
+    visibility: hidden !important;
+}
+
+a:not([href*='$GPT_PATH']) {
+    display: none !important;
+}
