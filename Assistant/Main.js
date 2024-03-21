@@ -15,21 +15,6 @@ dialog.showErrorBox = function(title, content) {
     console.log(`${title}\n${content}`);
 };
 
-ipcMain.on('executeJavaScriptReply', async (event, arg) => {
-  console.log("GOT JS REPLY", arg)
-  toolClient.onMessage('executeJavaScriptReply', arg)
-})
-
-ipcMain.on('executeJavaScriptException', async (event, arg) => {
-  console.log("GOT JS EXCEPTION", arg)
-  toolClient.onMessage('executeJavaScriptException', arg)
-})
-
-ipcMain.on('will-navigate', async (event, arg) => {
-  console.log("GOT NAVIGATE", arg)
-  toolClient.onMessage('unload', JSON.parse(arg))
-})
-
 initGPT = (win, url) => {
   win.webContents.on('did-finish-load', () => {
     const current = win.webContents.getURL()
@@ -57,11 +42,11 @@ initGPT = (win, url) => {
 let win
 async function createWindow () {
   session.defaultSession.setPermissionCheckHandler((webContents, permission) => {
-    console.log("permission check:", permission)
+    //console.log("permission check:", permission)
     return true
   });
   session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
-    console.log("permission request:", permission)
+    //console.log("permission request:", permission)
     callback(true)
   });
   // Create the browser window.

@@ -21,6 +21,10 @@ const { getGeoLocation } = require('./Location.js')
 const FastEmbed = require('./FastEmbed.js')
 const { InMemorySearch } = require('./InMemorySearch.js')
 const { shell, tempFile, getLoginShell } = require('./Shell.js')
+const { encode } = require('gpt-3-encoder')
+const { getScreenDimensions } = require('./Screen.js')
+
+const countTokens = text => text ? encode(text).length : 0
 
 const apiKey = fs.readFileSync('./apiKey.txt', 'utf-8').trim()
 const serverURL = fs.readFileSync('./serverURL.txt', 'utf-8').trim()
@@ -170,46 +174,77 @@ initPlaywright = async () => {
   }
 }
 
-const openPage = async (url) => {
+const openPage = async (url, options) => {
+  options = options || {
+    width: 800,
+    height: 600,
+    visible: true
+  }
+  const { width, height, visible } = options
   await initPlaywright()
   if (!page) {
-    await electronApp.evaluate(({ BrowserWindow, session}, url) => {
+    console.log("options", options)
+    await electronApp.evaluate(({ BrowserWindow, session}, options) => {
+      options = JSON.parse(options)
+      console.log("inside options", options)
+      const { url, height, width, visible, title } = options
       const newWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width,
+        height,
       })
+      newWindow.on('close', (event) => {
+        event.preventDefault();
+        newWindow.hide();
+      });
       console.log("created electron window")
       setTimeout(() => {
-        newWindow.setTitle('Assistant')
+        newWindow.setTitle(title)
         newWindow.loadURL(url)
       }, 200)
-    }, url)
+    }, JSON.stringify({
+      width, height, visible, title: 'Assistant', url
+    }))
     page = await electronApp.waitForEvent('window')
     await page.setDefaultTimeout(10000)
-    page.on('close', () => page = null)
   } else {
+    await electronApp.evaluate(({BrowserWindow}, options) => {
+      const { height, width, visible } = JSON.parse(options)
+      const allWindows = BrowserWindow.getAllWindows()
+      const mainWindow = allWindows[0]
+      if (visible) {
+        mainWindow.show()
+      } else {
+        mainWindow.hide()
+      }
+      mainWindow.setSize(width, height)
+    }, JSON.stringify(options))
     await page.goto(url, { waitUntil: 'load' });
   }
   return page
 }
 
 const scrape = async page => {
-  // Extract text and links together
+  await page.waitForLoadState('load')
   const content = await page.evaluate(() => {
     const extractContent = (node) => {
-      let text = ''
-      node.childNodes.forEach(child => {
+      let text = '';
+      let links = []
+      for (const child of node.childNodes) {
         if (child.nodeType === Node.TEXT_NODE) {
-          text += child.nodeValue
+          //text += child.nodeValue.trim() + '\n';
         } else if (child.nodeType === Node.ELEMENT_NODE) {
           if (child.nodeName === 'A') {
-            text += '['+child.textContent+'](' + child.href + ')'
+            links.push('[' + child.textContent.trim() + '](' + child.href + ')')
+          } else if (child.nodeName === 'P' || child.nodeName === 'H1' || child.nodeName === 'H2' || child.nodeName === 'H3' || child.nodeName === 'H4' || child.nodeName === 'H5' || child.nodeName === 'H6') {
+            text += child.innerText.split('.').join('\n')
           } else {
-            text += extractContent(child)
+            const result = extractContent(child);
+            links = links.concat(result.links)
+            text += result.text
           }
         }
-      })
-      return text
+      }
+      return { links, text: text.trim() }
     }
     return extractContent(document.body)
   })
@@ -225,19 +260,24 @@ const searchDocument = async ({document, query, chunkSize, limit, createEmbeddin
   let embeddingSearch
   if (!existing || existing.chunkSize !== chunkSize) {
     let text
+    let links
     if (!existing) {
       const page = await openPage(document)
       //text = await page.evaluate(() => document.documentElement.innerText)
-      text = await scrape(page)
+      const scraped = await scrape(page)
+      text = scraped.text
+      links = scraped.links
     } else {
       text = existing.text
+      links = existing.links
     }
     chunkSize = chunkSize || 200
     //console.log("GOT TEXT", text)
+    //console.log("GOT LINKS", links)
     const lunr = require('lunr')
     docs = {}
     const chunks = []
-    const sentences = text.split('\n').map(x => x.trim()).filter(x => x && !x.startsWith('.'))
+    const sentences = text.split(/[.\n]/).map(x => x.trim()).filter(x=>x)
     idx = lunr(function() {
       this.field('text')
       let id = 0
@@ -254,7 +294,6 @@ const searchDocument = async ({document, query, chunkSize, limit, createEmbeddin
       const flush = () => {
         const chunk = doc.join('\n').trim()
         if (chunk) {
-          chun = 'Line ' +i + ", " +chunk
           chunks.push(chunk)
           add({id: i, text: chunk})
           doc = []
@@ -271,10 +310,14 @@ const searchDocument = async ({document, query, chunkSize, limit, createEmbeddin
         }
       }
       flush()
+      for (const link of links) {
+        self.add({id: i, text: link})
+        i++
+      }
     })
     embeddingSearch = new InMemorySearch(createEmbeddings)
     await embeddingSearch.index(chunks)
-    documents[document] = { idx, text, chunkSize, docs, embeddingSearch }
+    documents[document] = { idx, text, links, chunkSize, docs, embeddingSearch }
   } else {
     idx = existing.idx
     docs = existing.docs
@@ -287,7 +330,7 @@ const searchDocument = async ({document, query, chunkSize, limit, createEmbeddin
   let results2 = await embeddingSearch.search(query)
   return {
     keyword: results1.slice(0, limit || 3),
-    vector: results2.slice(0, limit || 3)
+    vector: results2.results.slice(0, limit || 3)
   }
 }
 
@@ -401,7 +444,8 @@ const getOSVersion = async () => {
 utcOffset = -(new Date().getTimezoneOffset()*60*1000)
 
 const getToolSchema = name => {
-  const {paths} = require('./GptSchema.json')
+  const platform = os.platform() === 'win32' ? 'Windows' : 'MacOS'
+  const {paths} = require('../Build/Schema-${platform}.json')
   for (const path in paths) {
     const { operationId } = paths[path].post
     if (operationId === name) {
@@ -413,7 +457,6 @@ const getToolSchema = name => {
 class ToolClient {
 
   constructor(model) {
-    console.log("MODEL", model)
     this.model = model
   }
 
@@ -610,25 +653,6 @@ class ToolClient {
     return ob
   }
 
-  onMessage = (type, value) => {
-    try {
-      console.log("onMessage", type, value)
-      console.log("value", typeof(value))
-      switch (type) {
-        case 'openURL':
-          openPage(value)
-          break
-        case 'will-navigate':
-          const { from, to } = value
-          this.cancelJavaScriptReplyHandler(value, false)
-          windows[from].navigate(to)
-          break
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   getPlatformInfo = async () => {
     const platform = process.platform === 'darwin' ? 'MacOS' : 'Windows'
     const osVersion = await getOSVersion()
@@ -678,8 +702,8 @@ class ToolClient {
         {
           let content = ''
           try {
-            let { target, script } = args
-            const page = await openPage(target)
+            let { target, script, window } = args
+            const page = await openPage(target, window)
             console.log(script)
             script = returnFunctionDecl(script)
             const fun = await eval(script)
@@ -991,12 +1015,14 @@ class ToolClient {
         {
           const { platform, osVersion } = await this.getPlatformInfo()
           const {city, region, country, loc, postal, timezone } = this.location
+          const { width, height } = await getScreenDimensions()
           const content = `User info: ${JSON.stringify(os.userInfo())}
 Location: ${JSON.stringify({city, region, country, geo: loc, postal, timezone})}
 UTC offset: ${utcOffset}
 Local time: ${formatDate(utcOffset, Date.now())}
 Hostname: ${os.hostname()}
 Platform: ${platform} ${osVersion}
+Screen: ${width}x${height}
 `
           return reply ({
             content, isError

@@ -3,7 +3,7 @@ const { EmbeddingModel, FlagEmbedding } = require("fastembed")
 let embeddingModel
 const vectorSize = 768
 const createEmbeddings = async (documents, batchSize) => {
-  batchSize = batchSize || 256
+  batchSize = batchSize || 16
   if (!embeddingModel) {
     embeddingModel = await FlagEmbedding.init({
       model: EmbeddingModel.BGEBaseEN
