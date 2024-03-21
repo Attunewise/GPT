@@ -43,7 +43,7 @@ You must first create a firebase project using the Google firebase console
 #### **Add Firebase Authentication to Your Project:**
 1. In the left-hand menu, click on "Authentication" to open the Authentication section.
 2. Tap the "Get Started" Button
-3. You don't have to enable any sign-in providers as the GPT client will use custom authentication with the API key.
+3. Do not enable any sign-in providers as the GPT client will use custom authentication with the API key.
 
 #### **Add Firestore to Your Project:**
 
@@ -53,7 +53,7 @@ You must first create a firebase project using the Google firebase console
     
 3.  **Choose Database Mode:** You'll be prompted to select a mode for your Firestore Database. You can choose between “Production mode” and “Test mode”. Choose Production.
     
-4.  **Select a Location:** Choose a location for your Firestore Database. This determines where your data is stored and can affect latency for your users, so pick a location that is close to your you as possible. If undecided, choose us-central.
+4.  **Select a Location:** Choose a location for your Firestore Database. This determines where your data is stored and can affect latency for your users, so pick a location that is close to you as possible. If undecided, choose us-central.
     
 5.  **Finalize:** Click on “Done” to finalize the creation of your Firestore database. It might take a few moments for the database to be fully set up.
 
@@ -80,7 +80,7 @@ Additionally, it will create the following files containing information you will
 5. `Schema-MacOS.json` - Schema for the actions provided by your GPT on a Mac.
 6. `serverURL.txt` - the url of your deployed server
 
-xTo build and deploy your server follow these steps:
+To build and deploy your server follow these steps:
 1.  Open a terminal and navigate to the `Cloud` folder.
 2.  Run ```npm install -g firebase-tools``` to install the firebase cli, if you haven't already.
 2.  Run ```firebase login``` to log in to the firebase cli, if you haven't already
@@ -103,7 +103,7 @@ Select the Configure tab and perform the following steps:
 1. Copy the contents of `Instructions-Windows.txt`  or `Instructions-MacOS.txt` into the Instructions field that says "What does this GPT do etc"
 2. Turn off the Web Browsing capability as the GPT has its own web browser
 3. Tap the Create new action button
-4. Select Authentication drop-down and choose Authentication type `API Key` and Auth Type `Bearer` and copy and paste contents of `apiKey.txt` into the API Key field, then Save.
+4. Select the Authentication drop-down and choose Authentication type "API Key" and Auth Type "Bearer" and copy and paste contents of `apiKey.txt` into the API Key field, then Save.
 5. Copy and paste the content of `Schema-Windows.json` or `Schema-MacOS.json` into the text area where it says "Enter you OpenAPI schema here"
 6. Press the back button, then scroll down to the bottom of the Configure tab and open "Additional Settings" and disable "Use conversation data in your GPT to improve our models"
 7. Create and save for yourself only (DO NOT SHARE OR MAKE THIS GPT PUBLIC AS IT HAS ACCESS TO YOUR COMPUTER)
