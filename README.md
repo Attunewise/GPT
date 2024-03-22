@@ -99,7 +99,7 @@ This command will
 6. Generate the output files
 
 Next you must create your GPT using OpenAI's [GPT editor](https://chat.openai.com/gpts/editor)
-Select the Configure tab and perform the following steps:
+Create a new GPT, then select the Configure tab and perform the following steps:
 1. Copy the contents of `Instructions-Windows.txt`  or `Instructions-MacOS.txt` into the Instructions field that says "What does this GPT do etc"
 2. Turn off the Web Browsing capability as the GPT has its own web browser
 3. Tap the Create new action button
