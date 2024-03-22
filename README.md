@@ -129,3 +129,5 @@ NOTE: be sure to keep the following generated files private:
 3. `{Cloud,Assistant}/firebaseConfig.json`
 
 Once your server is deployed, you can modify the schema in your GPT and make changes to the Assistant app without redeploying the server.
+
+Don't be surprised when GPT-4 hallucinates false information and/or incorrect code. It talks a big game but when it comes down to actually doing it, it usually fails and moonwalks it all back. And in case you're wondering, the same occurs with Claude-3 Opus.
