@@ -1,4 +1,4 @@
-This project enables you to experiment with an OpenAI [GPT](https://chat.openai.com/gpts) that can act as an agent on your desktop computer.
+This project enables you to host an OpenAI [GPT](https://chat.openai.com/gpts) that can act as an agent on your desktop computer.
 The benefit of this approach compared to other agent frameworks is that OpenAI pays for the tokens and you don't have to pay for the [expensive GPT-4 API](https://openai.com/pricing).
 
 Using GPT-4 with tools has many pitfalls and failures, which few people are aware of due to limited access to testing it on realistic use cases. The purpose of this project is to enable such testing. All you need is a paid OpenAI account which is $20/mo.
