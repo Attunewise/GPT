@@ -1,6 +1,6 @@
 {
   "name": "VScode",
-  "enabled": true,
+  "enabled": false,
   "platforms": ["windows", "macos"],
   "tools": [{
     "type": "function",

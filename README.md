@@ -169,3 +169,10 @@ You can add new tools by addign a folder under `Assistant/Plugin/plugins`. The f
 
 The VSCode plugin uses a websocket server to communicate with the plugin running inside of VSCode. You can use this framework for other plugins, for example we've used it with `ExtendScript` and `UXP` plugins for Adobe Creative Suite.
 
+Once you've enabled a plugin, you can generate new JSON action schemas for its tools by navigating to the `Assistant` folder, and running
+
+```
+node installPlugins.js
+``
+
+This will generate `Schema-Windows-with-plugins.json` and `Schema-MacOS-with-plugins.json` in the `Build` folder which you can then copy and paste int o your GPT configuration in the OpenAI GPT editor.

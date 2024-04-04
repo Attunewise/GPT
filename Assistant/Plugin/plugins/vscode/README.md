@@ -1,0 +1,1 @@
+To use the `vscode` tool you'll need to install the assistant's VSCode plugin which is under `./VSCode' into VSCode. And you'll need to enable it in `./config.json`.
