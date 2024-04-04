@@ -23,6 +23,7 @@ const { InMemorySearch } = require('./InMemorySearch.js')
 const { shell, tempFile, getLoginShell } = require('./Shell.js')
 const { encode } = require('gpt-3-encoder')
 const { getScreenDimensions } = require('./Screen.js')
+const { loadPlugins } = require('./PluginTools.js')
 
 const countTokens = text => text ? encode(text).length : 0
 
@@ -49,6 +50,7 @@ const logError = (...args) => {
   console.error(...args)
   //electronLog.error(...args)
 }
+
 
 const executeAppleScript = async (lang, script, timeout) => {
   const { filePath, cleanup } = await tempFile({ postfix: lang == 'javaScript' ? '.js' : '.scpt' });
@@ -458,6 +460,9 @@ class ToolClient {
 
   constructor(model) {
     this.model = model
+    loadPlugins().then(tools => {
+      this.pluginTools = tools
+    })
   }
 
   login = async () => {
@@ -671,6 +676,22 @@ class ToolClient {
     let isError
     switch (name) {
       default:
+        if (this.pluginTools) {
+          for (const tool of this.pluginTools) {
+            const supported = tool.getTools()
+            if (supported.indexOf('name') >= 0) {
+              try {
+                const { isError, content } = await tool.call(name, args)
+                return reply({
+                  content, isError
+                })
+              } catch (err) {
+                console.error(err)
+                return { content: "Error invoking plugin: " + tool.getName() + "\n" + err.message, isError: true }
+              }
+            }
+          }
+        }
         break
       case 'openURL':
       case 'open':

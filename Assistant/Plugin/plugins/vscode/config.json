@@ -1,0 +1,22 @@
+{
+  "name": "VScode",
+  "enabled": true,
+  "platforms": ["windows", "macos"],
+  "tools": [{
+    "type": "function",
+    "function": {
+      "name": "vscode",
+      "description": "Execute javascript code inside of a Visual Studio Code (VSCode) extension. You can safely access all capabilities of VSCode via its extensibilty API. This allows you to assist the user in all forms of software development.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "javascript": {
+            "type": "string",
+            "description": "The javascript code to execute."
+          }
+        },
+        "required": ["javascript"]
+      }
+    }
+  }]
+}

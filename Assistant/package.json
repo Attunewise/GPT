@@ -32,7 +32,8 @@
     "rxfire": "^6.0.5",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "electron": "^29.1.0",
