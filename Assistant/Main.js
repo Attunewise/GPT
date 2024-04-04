@@ -16,13 +16,19 @@ dialog.showErrorBox = function(title, content) {
 };
 
 initGPT = (win, url) => {
-  win.webContents.on('did-finish-load', () => {
+  win.webContents.on('did-finish-load', async () => {
     const current = win.webContents.getURL()
+    console.log(current)
     switch (current) {
       case 'https://chat.openai.com/':
       case 'https://chat.openai.com':
-        // login complete
-        win.loadURL(url)
+        const innerText = await win.webContents.executeJavaScript('document.body.innerText')
+        //console.log(innerText)
+        const isLoggedIn = innerText.indexOf("Log in or sign up") < 0
+        console.log("isLoggedIn", isLoggedIn)
+        if (isLoggedIn) {
+          win.loadURL(url)
+        }
         break
       case url:
       case url + '/':
@@ -30,7 +36,7 @@ initGPT = (win, url) => {
           let css = fs.readFileSync(path.join(__dirname, 'gpt-override.css'), 'utf-8')
           const { pathname } = new URL(url)
           css = css.replaceAll('$GPT_PATH', pathname)
-          win.webContents.insertCSS(css);
+          //win.webContents.insertCSS(css);
           console.log("inserted css")
           
         }, 0)
