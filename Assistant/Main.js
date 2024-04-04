@@ -22,9 +22,9 @@ initGPT = (win, url) => {
     switch (current) {
       case 'https://chat.openai.com/':
       case 'https://chat.openai.com':
-        const innerText = await win.webContents.executeJavaScript('document.body.innerText')
-        //console.log(innerText)
-        const isLoggedIn = innerText.indexOf("Log in or sign up") < 0
+        let ses = win.webContents.session;
+        const cookies = await ses.cookies.get({domain: 'chat.openai.com'})
+        const isLoggedIn = cookies.find(x => x.name == '__Secure-next-auth.session-token')
         console.log("isLoggedIn", isLoggedIn)
         if (isLoggedIn) {
           win.loadURL(url)
@@ -36,9 +36,8 @@ initGPT = (win, url) => {
           let css = fs.readFileSync(path.join(__dirname, 'gpt-override.css'), 'utf-8')
           const { pathname } = new URL(url)
           css = css.replaceAll('$GPT_PATH', pathname)
-          //win.webContents.insertCSS(css);
+          win.webContents.insertCSS(css);
           console.log("inserted css")
-          
         }, 0)
     }
   });
