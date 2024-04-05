@@ -139,7 +139,7 @@ Don't be surprised when GPT-4 hallucinates false information and/or incorrect co
 
 Experimental use of plugin tools:
 We've added a method for plugging in additional tools and as an example provided a plugin for VSCode
-You can add new tools by addign a folder under `Assistant/Plugin/plugins`. The folder must contain the following files:
+You can add new tools by adding a folder under `Assistant/Plugin/plugins`. The folder must contain the following files:
 1. `config.json`
 2. `Tool.js`
 
@@ -177,6 +177,6 @@ Once you've enabled a plugin, you can generate new JSON action schemas for its t
 
 ```
 node installPlugins.js
-``
+```
 
-This will generate `Schema-Windows-with-plugins.json` and `Schema-MacOS-with-plugins.json` in the `Build` folder which you can then copy and paste int o your GPT configuration in the OpenAI GPT editor.
+This will generate `Schema-Windows-with-plugins.json` and `Schema-MacOS-with-plugins.json` in the `Build` folder which you can then copy and paste into your GPT configuration in the OpenAI GPT editor.
