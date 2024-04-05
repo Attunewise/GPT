@@ -143,7 +143,7 @@ You can add new tools by adding a folder under `Assistant/Plugin/plugins`. The f
 1. `config.json`
 2. `Tool.js`
 
-`config.json` provides the name, whether the plugin is enabled, the platforms it suppports, and the tools it supports in the form of function definitions according to the OpenAI function calling specification. Here is an example:
+`config.json` provides the name, whether the plugin is enabled, the platforms it supports, and the tools it supports in the form of function definitions according to the OpenAI function calling specification. Here is an example:
 ```
 {
   "name": "VScode",
@@ -169,7 +169,7 @@ You can add new tools by adding a folder under `Assistant/Plugin/plugins`. The f
 }
 ```
 
-`Tool.js` must export a single function `call` which will take two arguments, `name`, and `args` corresponding to the function call. It must return an object containg to properties `content` which is a string containing the output of the function call and `isError` which is a boolean. If isError is true, then `content` should contain the error message.
+`Tool.js` must export a single function `call` which will take two arguments, `name`, and `args` corresponding to the function call. It must return an object containing two properties, `content` which is a string containing the output of the function call and `isError` which is a boolean. If isError is true, then `content` should contain the error message.
 
 The VSCode plugin uses a websocket server to communicate with the plugin running inside of VSCode. You can use this framework for other plugins, for example we've used it with `ExtendScript` and `UXP` plugins for Adobe Creative Suite.
 
