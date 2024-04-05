@@ -1,3 +1,6 @@
+![image](https://github.com/Attunewise/GPT/assets/164077948/a1f7f75b-4987-4a2a-a651-569b156c9564)
+
+
 This project enables you to host an OpenAI [GPT](https://chat.openai.com/gpts) that can act as an agent on your desktop computer.
 The benefit of this approach compared to other agent frameworks is that OpenAI pays for the tokens and you don't have to pay for the [expensive GPT-4 API](https://openai.com/pricing).
 
