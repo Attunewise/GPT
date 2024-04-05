@@ -1,4 +1,5 @@
-![image](https://github.com/Attunewise/GPT/assets/164077948/a1f7f75b-4987-4a2a-a651-569b156c9564)
+
+![Screenshot 2024-03-20 214951](https://github.com/Attunewise/GPT/assets/164077948/6a201658-f403-4a1f-81f7-73288fd94cb1)
 
 
 This project enables you to host an OpenAI [GPT](https://chat.openai.com/gpts) that can act as an agent on your desktop computer.
