@@ -53,7 +53,7 @@ const logError = (...args) => {
 
 
 const executeAppleScript = async (lang, script, timeout) => {
-  const { filePath, cleanup } = await tempFile({ postfix: lang == 'javaScript' ? '.js' : '.scpt' });
+  const { filePath, cleanup } = await tempFile({ suffix: lang == 'javaScript' ? '.js' : '.scpt' });
   console.log({lang, script})
   await fss.writeFile(filePath, script, 'utf-8');
   await fss.chmod(filePath, '755');
@@ -458,8 +458,9 @@ const getToolSchema = name => {
 
 class ToolClient {
 
-  constructor(model) {
-    this.model = model
+  constructor(opts) {
+    const { sendMessage } = opts
+    this.sendMessage = sendMessage
     loadPlugins().then(tools => {
       this.pluginTools = tools
     })
@@ -703,7 +704,13 @@ class ToolClient {
             if (!url.startsWith('http')) {
               const open = (await import('open')).default
               console.log('open', open)
-              const { pathname } = new URL(url)
+              let pathname
+              try {
+                const u = new URL(url)
+                pathname = u.pathname
+              } catch (err) {
+                pathname = url
+              }
               await open(pathname)
               content = "Opened app."
             }  else {

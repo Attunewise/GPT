@@ -17,7 +17,10 @@ dialog.showErrorBox = function(title, content) {
 
 initGPT = (win, url) => {
   win.webContents.on('did-finish-load', async () => {
-    const current = win.webContents.getURL()
+    let current = win.webContents.getURL()
+    if (current.startsWith(url)) {
+      current = url
+    }
     console.log(current)
     switch (current) {
       case 'https://chat.openai.com/':
@@ -56,7 +59,7 @@ async function createWindow () {
   });
   // Create the browser window.
   win = new BrowserWindow({
-    width: 600,
+    width: 800,
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'Preload.js'),
