@@ -6,7 +6,7 @@ const os = require('os')
 const fs = require('fs')
 const gptURL = fs.readFileSync('./gptURL.txt', 'utf-8').trim()
 try {
-    require('electron-reloader')(module);
+//    require('electron-reloader')(module);
 } catch (_) {}
 
 let toolClient = new ToolClient('gpt-4')
@@ -16,20 +16,29 @@ dialog.showErrorBox = function(title, content) {
 };
 
 initGPT = (win, url) => {
+  console.log('initGPT', url)
+  url = url.replace('chat.openai.com', 'chatgpt.com')
   win.webContents.on('did-finish-load', async () => {
     let current = win.webContents.getURL()
+    console.log("current", current)
     if (current.startsWith(url)) {
       current = url
     }
     console.log(current)
     switch (current) {
+      default:
+      case 'https://chatgpt.com/':
       case 'https://chat.openai.com/':
       case 'https://chat.openai.com':
         let ses = win.webContents.session;
         const cookies = await ses.cookies.get({domain: 'chat.openai.com'})
+        const cookies2 = await ses.cookies.get({domain: 'chatgpt.com'})
+        console.log(cookies)
         const isLoggedIn = cookies.find(x => x.name == '__Secure-next-auth.session-token')
+              || cookies2.find(x => x.name == '__Secure-next-auth.session-token')
         console.log("isLoggedIn", isLoggedIn)
         if (isLoggedIn) {
+          console.log("LOADING", url)
           win.loadURL(url)
         }
         break

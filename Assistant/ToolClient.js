@@ -796,7 +796,7 @@ class ToolClient {
             if (lang === 'javaScript') {
               script = "(function() {" + script + "})()" 
             }
-            const { code, output } = await executeAppleScript(lang, script, 25000)
+            const { code, output } = await executeAppleScript(lang, script, 120000)
             console.log('apple script output', {code, output})
             isError = code !== 0
             content += "`exit code " + code+"`\n"
@@ -821,7 +821,7 @@ class ToolClient {
           let content
           try {
             const { command, admin } = args
-            const { code, output } = await shell(command, {powershell: true, admin, timeout: 25000})
+            const { code, output } = await shell(command, {powershell: true, admin, timeout: 120000})
             if (code !== 0) {
               isError = true
             }
@@ -844,7 +844,7 @@ class ToolClient {
           let content
           try {
             const { text } = args
-            const { code, output } = await shell(text, {timeout: 25000})
+            const { code, output } = await shell(text, {timeout: 120000})
             if (code !== 0) {
               isError = true
             }

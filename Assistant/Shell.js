@@ -134,6 +134,7 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     const process = spawn(shell, args)
     process.stdout.on('data', (data) => {
       data = data.toString()      
+      console.log(data)
       if (trace) {
         theProcess.stdout.write(data)
       }
@@ -141,6 +142,7 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     })
     process.stderr.on('data', (data) => {
       data = data.toString().replace(filePath + ":", '')
+      console.error(data)
       if (traceErr) {
         theProcess.stderr.write(data)
       }
