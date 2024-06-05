@@ -36,7 +36,7 @@ nav[aria-label="Chat history"] .sticky > div {
 }
 
 a:not([href*='$GPT_PATH']) {
-    display: none !important;
+
 }
 
 #__next > div.relative.z-0.flex.h-full.w-full.overflow-hidden > div.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden > main > div.flex.h-full.flex-col > div.flex-1.overflow-hidden > div > div > div > div > div.sticky.top-0.mb-1\.5.flex.items-center.justify-between.z-10.h-14.p-2.font-semibold.bg-token-main-surface-primary > div.flex.gap-2.pr-1 > button {

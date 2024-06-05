@@ -868,7 +868,9 @@ class ToolClient {
           try {
             const { files } = args
             for (const file of files) {
-              const { pathname, text, encoding, append } = file
+              let { pathname, text, encoding, append } = file
+              const homeDirectory = require('os').homedir();
+              pathname = pathname.replace('~', homeDirectory)
               if (append) {
                 await fss.appendFile(pathname, text, encoding)
               } else {

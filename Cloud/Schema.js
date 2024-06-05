@@ -56,6 +56,11 @@ const getSchema = (platform, serverURL) => {
                     "command": {
                       "type": "string",
                       "description": "The script to execute"
+                    },
+                    "timeout": {
+                      "type": "integer",
+                      "description": "Maximum number of seconds to wait for the script to complete",
+                      "default": 30
                     }
                   }
                 }
@@ -238,7 +243,12 @@ const getSchema = (platform, serverURL) => {
                   "properties": {
                     "text": {
                       "type": "string",
-                      "description": "The shell command to be executed or terminal input to the currently executing command. You have permission to downloads file to the temp folder. Always create new files in the temp folder unless the user instructs you otherwise. YOU MUST warn the user and get confirmation before executing potentially dangerous or long-running commands. Note that CLI interaction is possible. Don't forget files are case sensitive on Mac."
+                      "description": "The shell command to be executed. You have permission to downloads file to the temp or Downloads folder. Always create new files in the temp folder unless the user instructs you otherwise. YOU MUST warn the user and get confirmation before executing potentially dangerous or long-running commands. Note that CLI interaction isn't possible currently. Don't forget files are case sensitive on Mac."
+                    },
+                    "timeout": {
+                      "type": "integer",
+                      "description": "Maximum number of seconds to wait for the shell command to complete",
+                      "default": 30
                     }
                   }
                 }
