@@ -18,6 +18,7 @@ dialog.showErrorBox = function(title, content) {
 initGPT = (win, url) => {
   console.log('initGPT', url)
   url = url.replace('chat.openai.com', 'chatgpt.com')
+  let triedLogin = false
   win.webContents.on('did-finish-load', async () => {
     let current = win.webContents.getURL()
     console.log("current", current)
@@ -33,12 +34,13 @@ initGPT = (win, url) => {
         let ses = win.webContents.session;
         const cookies = await ses.cookies.get({domain: 'chat.openai.com'})
         const cookies2 = await ses.cookies.get({domain: 'chatgpt.com'})
-        console.log(cookies)
-        const isLoggedIn = cookies.find(x => x.name == '__Secure-next-auth.session-token')
-              || cookies2.find(x => x.name == '__Secure-next-auth.session-token')
+        console.log(cookies2)
+        const isLoggedIn = //cookies.find(x => x.name == '__Secure-next-auth.session-token') ||
+               cookies2.find(x => x.name == '__Secure-next-auth.session-token')
         console.log("isLoggedIn", isLoggedIn)
-        if (isLoggedIn) {
+        if (!triedLogin && isLoggedIn) {
           console.log("LOADING", url)
+          triedLogin = true
           win.loadURL(url)
         }
         break
@@ -48,8 +50,8 @@ initGPT = (win, url) => {
           let css = fs.readFileSync(path.join(__dirname, 'gpt-override.css'), 'utf-8')
           const { pathname } = new URL(url)
           css = css.replaceAll('$GPT_PATH', pathname)
-          win.webContents.insertCSS(css);
-          console.log("inserted css")
+          //win.webContents.insertCSS(css);
+          //console.log("inserted css")
         }, 0)
     }
   });

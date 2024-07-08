@@ -327,8 +327,9 @@ const searchDocument = async ({document, query, chunkSize, limit, createEmbeddin
   }
   let results1 = idx.search(query).map(result => {
     console.log('result', result)
-    return docs[result.ref].text
-  })
+    const result1 = docs[result.ref]    
+    return result1 ? result1.text : ''
+  }).filter(x => x)
   let results2 = await embeddingSearch.search(query)
   return {
     keyword: results1.slice(0, limit || 3),
